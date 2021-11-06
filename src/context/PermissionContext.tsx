@@ -34,6 +34,7 @@ export const PermissionProvider = ({ children }: ThemeProviderProps) => {
     useState<PermissionState>(permissionInitState);
 
   useEffect(() => {
+    checkLocationPermission();
     AppState.addEventListener('change', state => {
       if (state !== 'active') {
         return;
