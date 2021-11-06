@@ -6,7 +6,7 @@ import {
   PERMISSIONS,
   PermissionStatus,
   request,
-  // RESULTS,
+  openSettings,
 } from 'react-native-permissions';
 
 export interface PermissionState {
@@ -48,6 +48,10 @@ export const PermissionProvider = ({ children }: ThemeProviderProps) => {
       permisionStatus = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
     } else {
       permisionStatus = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    }
+
+    if (permisionStatus === 'blocked') {
+      openSettings();
     }
 
     setPermissions({

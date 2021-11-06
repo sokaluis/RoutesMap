@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { BlackButton } from '../components/BlackButton';
 import { PermissionContext } from '../context/PermissionContext';
 
 const PermissionsScreen = () => {
@@ -7,9 +8,9 @@ const PermissionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>PermissionsScreen</Text>
+      <Text>Solicitar Permisos de Location</Text>
 
-      <Button title="Permiso" onPress={askLocationPermission} />
+      <BlackButton title="Permiso" onPress={askLocationPermission} />
 
       <Text>{JSON.stringify(permissions, null, 3)}</Text>
     </View>
