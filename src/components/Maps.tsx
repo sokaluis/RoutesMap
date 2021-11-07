@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, {
   PROVIDER_GOOGLE,
   Marker,
   MarkerProps,
+  Polyline,
 } from 'react-native-maps';
 import useLocation from '../hooks/useLocation';
 import LoadingScreen from '../screens/LoadingScreen';
@@ -22,9 +23,11 @@ export const Maps = ({ markers }: Props) => {
     followUserLocation,
     userLocation,
     stopFollowUserLocation,
+    routeLines,
   } = useLocation();
   const mapViewRef = useRef<MapView>();
   const followingRef = useRef<boolean>(true);
+  const [showPolyline, setShowPolyline] = useState<boolean>(true);
 
   const centerPosition = async () => {
     const { latitude, longitude } = await getCurrentLocation();
@@ -78,6 +81,13 @@ export const Maps = ({ markers }: Props) => {
           longitudeDelta: 0.0121,
         }}
         onTouchStart={() => (followingRef.current = false)}>
+        {showPolyline && (
+          <Polyline
+            coordinates={routeLines}
+            strokeColor="black"
+            strokeWidth={3}
+          />
+        )}
         {markers?.map((item, index) => (
           <Marker
             key={index}
@@ -88,6 +98,13 @@ export const Maps = ({ markers }: Props) => {
           />
         ))}
       </MapView>
+      <FAB
+        iconName="brush-outline"
+        onPress={() => {
+          setShowPolyline(!showPolyline);
+        }}
+        style={{ ...styles.fabPolyline }}
+      />
       <FAB
         iconName="compass-outline"
         onPress={centerPosition}
@@ -111,6 +128,11 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     bottom: 20,
+    right: 20,
+  },
+  fabPolyline: {
+    position: 'absolute',
+    bottom: 80,
     right: 20,
   },
 });
